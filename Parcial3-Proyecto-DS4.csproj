@@ -82,7 +82,13 @@
     <Compile Include="CapaDatos\ClienteBD.cs" />
     <Compile Include="CapaDatos\ConexionBD.cs" />
     <Compile Include="CapaDatos\IRepositorio.cs" />
+    <Compile Include="CapaEntidad\BitacoraEntry.cs" />
+    <Compile Include="CapaEntidad\CategoriaServicio.cs" />
     <Compile Include="CapaEntidad\Cliente.cs" />
+    <Compile Include="CapaEntidad\Mecanico.cs" />
+    <Compile Include="CapaEntidad\OrdenReparacion.cs" />
+    <Compile Include="CapaEntidad\Servicio.cs" />
+    <Compile Include="CapaEntidad\Usuario.cs" />
     <Compile Include="CapaPresentacion\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
