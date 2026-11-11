@@ -7,8 +7,6 @@ namespace Parcial3_Proyecto_DS4.CapaDatos
 {
     internal class ClienteBD : ConexionBD, IRepositorio<Cliente>
     {
-        // Hagan aqui el sistema CRUD para Implementar
-        // las operaciones protegiendo la base de datos contra inyección SQL mediante parámetros
         public bool Insertar(Cliente c)
         {
             cmd.Parameters.Clear();
@@ -24,8 +22,42 @@ namespace Parcial3_Proyecto_DS4.CapaDatos
             return filas > 0;
         }
 
-        // Les faltaria por hacer los metodos Listar, Actualziar y Eliminar
+        public DataTable Listar()
+        {
+            cmd.Parameters.Clear();
+            cmd.CommandText = "SELECT IdCliente, Nombre, Telefono, Correo, Direccion FROM Clientes";
+            DataSet ds = new DataSet();
+            MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+            da.Fill(ds);
+            return ds.Tables[0];
+        }
 
+        public bool Actualizar(Cliente c)
+        {
+            cmd.Parameters.Clear();
+            cmd.CommandText = "UPDATE Clientes SET Nombre=@nom, Telefono=@tel, Correo=@cor, Direccion=@dir WHERE IdCliente=@id";
+            cmd.Parameters.AddWithValue("@nom", c.Nombre);
+            cmd.Parameters.AddWithValue("@tel", string.IsNullOrEmpty(c.Telefono) ? (object)DBNull.Value : c.Telefono);
+            cmd.Parameters.AddWithValue("@cor", string.IsNullOrEmpty(c.Correo) ? (object)DBNull.Value : c.Correo);
+            cmd.Parameters.AddWithValue("@dir", string.IsNullOrEmpty(c.Direccion) ? (object)DBNull.Value : c.Direccion);
+            cmd.Parameters.AddWithValue("@id", c.IdCliente);
 
+            con.Open();
+            int filas = cmd.ExecuteNonQuery();
+            con.Close();
+            return filas > 0;
+        }
+
+        public bool Eliminar(int id)
+        {
+            cmd.Parameters.Clear();
+            cmd.CommandText = "DELETE FROM Clientes WHERE IdCliente=@id";
+            cmd.Parameters.AddWithValue("@id", id);
+
+            con.Open();
+            int filas = cmd.ExecuteNonQuery();
+            con.Close();
+            return filas > 0;
+        }
     }
 }
