@@ -25,7 +25,7 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
                 Close();
                 return;
             }
-
+            
             cboRol.Items.AddRange(new object[] { "Administrador", "Recepcionista", "Mecanico" });
             cboEstado.Items.AddRange(new object[] { "Activo", "Inactivo" });
             CargarUsuarios();

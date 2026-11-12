@@ -125,7 +125,7 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
 
         public static bool ComboSeleccionado(ComboBox cbo, string campo)
         {
-            if (cbo.SelectedIndex < 0 || cbo.SelectedValue == null)
+            if (cbo.SelectedIndex < 0 || cbo.SelectedItem == null)
             {
                 Advertencia("Debe seleccionar un " + campo + " válido.");
                 cbo.Focus();
