@@ -13,11 +13,11 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
         public FrmGestionUsuarios()
         {
             InitializeComponent();
+            txtUsername.KeyPress += Validador.PrevenirEspaciosEnBlanco;
         }
 
         private void FrmGestionUsuarios_Load(object sender, EventArgs e)
         {
-            // Solo el administrador puede gestionar usuarios.
             if (!SesionUsuario.EsAdministrador)
             {
                 MessageBox.Show("Solo un administrador puede gestionar usuarios.", "Acceso restringido",
@@ -25,7 +25,7 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
                 Close();
                 return;
             }
-
+            
             cboRol.Items.AddRange(new object[] { "Administrador", "Recepcionista", "Mecanico" });
             cboEstado.Items.AddRange(new object[] { "Activo", "Inactivo" });
             CargarUsuarios();
@@ -56,53 +56,20 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
             txtUsername.Focus();
         }
 
-        // Valida los campos. La contraseña solo es obligatoria al crear un usuario nuevo.
         private bool ValidarCampos(bool esNuevo)
         {
             string username = txtUsername.Text.Trim();
 
-            if (username.Length < 3)
-            {
-                Advertir("El usuario debe tener al menos 3 caracteres.", txtUsername);
-                return false;
-            }
-            if (username.Contains(" "))
-            {
-                Advertir("El usuario no puede contener espacios.", txtUsername);
-                return false;
-            }
-            if (esNuevo && txtPassword.Text.Length < 4)
-            {
-                Advertir("La contraseña debe tener al menos 4 caracteres.", txtPassword);
-                return false;
-            }
-            if (!esNuevo && txtPassword.Text.Length > 0 && txtPassword.Text.Length < 4)
-            {
-                Advertir("La nueva contraseña debe tener al menos 4 caracteres.", txtPassword);
-                return false;
-            }
-            if (cboRol.SelectedItem == null)
-            {
-                Advertir("Seleccione un rol.", cboRol);
-                return false;
-            }
-            if (cboEstado.SelectedItem == null)
-            {
-                Advertir("Seleccione un estado.", cboEstado);
-                return false;
-            }
-            return true;
-        }
+            if (!Validador.EsUsernameValido(username)) { txtUsername.Focus(); return false; }
+            if (!Validador.EsPasswordValido(txtPassword.Text, esNuevo)) { txtPassword.Focus(); return false; }
+            if (!Validador.ComboSeleccionado(cboRol, "rol")) return false;
+            if (!Validador.ComboSeleccionado(cboEstado, "estado")) return false;
 
-        private void Advertir(string mensaje, Control control)
-        {
-            MessageBox.Show(mensaje, "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            control.Focus();
+            return true;
         }
 
         private void txtUsername_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // No se permiten espacios en el nombre de usuario.
             if (e.KeyChar == ' ') e.Handled = true;
         }
 
@@ -127,7 +94,8 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
             {
                 if (usuarioBD.ExisteUsername(username))
                 {
-                    Advertir("Ya existe un usuario con ese nombre.", txtUsername);
+                    Validador.Advertencia("Ya existe un usuario con ese nombre.");
+                    txtUsername.Focus();
                     return;
                 }
 
@@ -159,8 +127,7 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
         {
             if (idSeleccionado == 0)
             {
-                MessageBox.Show("Seleccione un usuario de la tabla.", "Validación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Validador.Advertencia("Seleccione un usuario de la tabla.");
                 return;
             }
             if (!ValidarCampos(false)) return;
@@ -168,11 +135,11 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
             string username = txtUsername.Text.Trim();
             string estado = cboEstado.SelectedItem.ToString();
 
-            // Evita que el administrador se bloquee a sí mismo.
             if (idSeleccionado == SesionUsuario.IdUsuario &&
                 (estado == "Inactivo" || cboRol.SelectedItem.ToString() != "Administrador"))
             {
-                Advertir("No puede desactivarse ni quitarse el rol de administrador a sí mismo.", cboEstado);
+                Validador.Advertencia("No puede desactivarse ni quitarse el rol de administrador a sí mismo.");
+                cboEstado.Focus();
                 return;
             }
 
@@ -180,7 +147,8 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
             {
                 if (usuarioBD.ExisteUsername(username, idSeleccionado))
                 {
-                    Advertir("Ya existe otro usuario con ese nombre.", txtUsername);
+                    Validador.Advertencia("Ya existe otro usuario con ese nombre.");
+                    txtUsername.Focus();
                     return;
                 }
 
@@ -188,7 +156,7 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
                 {
                     IdUsuario = idSeleccionado,
                     Username = username,
-                    Password = txtPassword.Text, // vacío = conservar la actual
+                    Password = txtPassword.Text,
                     Rol = cboRol.SelectedItem.ToString(),
                     Estado = estado
                 };
@@ -215,14 +183,12 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
         {
             if (idSeleccionado == 0)
             {
-                MessageBox.Show("Seleccione un usuario de la tabla.", "Validación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Validador.Advertencia("Seleccione un usuario de la tabla.");
                 return;
             }
             if (idSeleccionado == SesionUsuario.IdUsuario)
             {
-                MessageBox.Show("No puede desactivar su propio usuario.", "Validación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Validador.Advertencia("No puede desactivar su propio usuario.");
                 return;
             }
 

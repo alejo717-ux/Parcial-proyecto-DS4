@@ -80,9 +80,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CapaDatos\BitacoraBD.cs" />
+    <Compile Include="CapaDatos\CategoriaServicioBD.cs" />
     <Compile Include="CapaDatos\ClienteBD.cs" />
     <Compile Include="CapaDatos\ConexionBD.cs" />
     <Compile Include="CapaDatos\IRepositorio.cs" />
+    <Compile Include="CapaDatos\MecanicoBD.cs" />
+    <Compile Include="CapaDatos\OrdenReparacionBD.cs" />
+    <Compile Include="CapaDatos\ServicioBD.cs" />
     <Compile Include="CapaDatos\UsuarioBD.cs" />
     <Compile Include="CapaEntidad\BitacoraEntry.cs" />
     <Compile Include="CapaEntidad\CategoriaServicio.cs" />
@@ -91,17 +95,23 @@
     <Compile Include="CapaEntidad\OrdenReparacion.cs" />
     <Compile Include="CapaEntidad\Servicio.cs" />
     <Compile Include="CapaEntidad\Usuario.cs" />
-    <Compile Include="CapaPresentacion\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CapaPresentacion\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="CapaPresentacion\FrmBitacora.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CapaPresentacion\FrmBitacora.Designer.cs">
       <DependentUpon>FrmBitacora.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CapaPresentacion\FrmCategorias.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CapaPresentacion\FrmCategorias.Designer.cs">
+      <DependentUpon>FrmCategorias.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CapaPresentacion\FrmClientes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CapaPresentacion\FrmClientes.Designer.cs">
+      <DependentUpon>FrmClientes.cs</DependentUpon>
     </Compile>
     <Compile Include="CapaPresentacion\FrmGestionUsuarios.cs">
       <SubType>Form</SubType>
@@ -115,9 +125,55 @@
     <Compile Include="CapaPresentacion\FrmLogin.Designer.cs">
       <DependentUpon>FrmLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="CapaPresentacion\FrmMecanicos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CapaPresentacion\FrmMecanicos.Designer.cs">
+      <DependentUpon>FrmMecanicos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CapaPresentacion\FrmMenuPrincipal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CapaPresentacion\FrmMenuPrincipal.Designer.cs">
+      <DependentUpon>FrmMenuPrincipal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CapaPresentacion\FrmOrdenesReparacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CapaPresentacion\FrmOrdenesReparacion.Designer.cs">
+      <DependentUpon>FrmOrdenesReparacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CapaPresentacion\FrmReporteConsultas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CapaPresentacion\FrmReporteConsultas.Designer.cs">
+      <DependentUpon>FrmReporteConsultas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CapaPresentacion\FrmServicios.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CapaPresentacion\FrmServicios.Designer.cs">
+      <DependentUpon>FrmServicios.cs</DependentUpon>
+    </Compile>
     <Compile Include="CapaPresentacion\SesionUsuario.cs" />
+    <Compile Include="CapaPresentacion\Validador.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="CapaPresentacion\FrmCategorias.resx">
+      <DependentUpon>FrmCategorias.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CapaPresentacion\FrmClientes.resx">
+      <DependentUpon>FrmClientes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CapaPresentacion\FrmMecanicos.resx">
+      <DependentUpon>FrmMecanicos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CapaPresentacion\FrmMenuPrincipal.resx">
+      <DependentUpon>FrmMenuPrincipal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CapaPresentacion\FrmServicios.resx">
+      <DependentUpon>FrmServicios.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -141,6 +197,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="sql\modelo ER.png" />
+    <Content Include="sql\script_taller.sql" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

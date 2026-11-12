@@ -20,13 +20,8 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
             string usuario = txtUsuario.Text.Trim();
             string password = txtPassword.Text;
 
-            if (usuario.Length == 0 || password.Length == 0)
-            {
-                MessageBox.Show("Ingrese el usuario y la contraseña.", "Datos incompletos",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                (usuario.Length == 0 ? txtUsuario : txtPassword).Focus();
-                return;
-            }
+            if (!Validador.CampoObligatorio(usuario, "usuario")) { txtUsuario.Focus(); return; }
+            if (!Validador.CampoObligatorio(password, "contraseña")) { txtPassword.Focus(); return; }
 
             try
             {
@@ -35,9 +30,7 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
                 if (u == null)
                 {
                     intentos++;
-                    MessageBox.Show("Usuario o contraseña incorrectos, o el usuario está inactivo.\n" +
-                                    "Intento " + intentos + " de " + MaxIntentos + ".",
-                        "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    Validador.Advertencia("Usuario o contraseña incorrectos, o el usuario está inactivo.\nIntento " + intentos + " de " + MaxIntentos + ".");
                     txtPassword.Clear();
                     txtPassword.Focus();
 

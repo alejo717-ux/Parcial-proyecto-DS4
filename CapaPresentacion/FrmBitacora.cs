@@ -16,11 +16,9 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
 
         private void FrmBitacora_Load(object sender, EventArgs e)
         {
-            // Solo el administrador puede consultar la auditoría.
             if (!SesionUsuario.EsAdministrador)
             {
-                MessageBox.Show("Solo un administrador puede consultar la bitácora.", "Acceso restringido",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Validador.Advertencia("Solo un administrador puede consultar la bitácora.");
                 Close();
                 return;
             }
@@ -43,20 +41,13 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
             }
             catch (Exception ex)
             {
-                MessageBox.Show("No se pudo cargar la bitácora.\n\n" + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No se pudo cargar la bitácora.\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnFiltrar_Click(object sender, EventArgs e)
         {
-            if (dtpDesde.Value.Date > dtpHasta.Value.Date)
-            {
-                MessageBox.Show("La fecha 'Desde' no puede ser posterior a la fecha 'Hasta'.", "Validación",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                dtpDesde.Focus();
-                return;
-            }
+            if (!Validador.EsRangoFechasValido(dtpDesde, dtpHasta)) return;
             CargarBitacora(dtpDesde.Value, dtpHasta.Value, txtBuscar.Text);
         }
 

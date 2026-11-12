@@ -62,3 +62,21 @@ INSERT INTO Usuarios (Username, Password, Rol) VALUES ('admin', '1234', 'Adminis
 INSERT INTO Clientes (Nombre, Telefono, Correo, Direccion) VALUES ('Carlos Mendoza', '6111-2222', 'carlos@mail.com', 'Panamá');
 INSERT INTO Mecanicos (Nombre, Especialidad, Telefono) VALUES ('Roberto Perez', 'Motor y Transmisión', '6999-8888');
 INSERT INTO CategoriasServicio (NombreCategoria, Descripcion) VALUES ('Mantenimiento', 'Cambio de aceite y filtros');
+
+USE TallerDB;
+
+-- Alteramos la tabla para agregar Precio Base
+ALTER TABLE Servicios ADD COLUMN PrecioBase DECIMAL(10,2) NOT NULL DEFAULT 0.00;
+
+-- Error en Visual Studio por falta de esto:
+USE TallerDB;
+
+-- Agregar la columna IdServicio a la tabla OrdenesReparacion
+ALTER TABLE OrdenesReparacion ADD COLUMN IdServicio INT NOT NULL AFTER IdMecanico;
+
+-- Agregar la llave foránea que la conecta con la tabla Servicios
+ALTER TABLE OrdenesReparacion ADD CONSTRAINT fk_orden_servicio FOREIGN KEY (IdServicio) REFERENCES Servicios(IdServicio);}
+
+-- Modificar la password porque MariaDB y Visual Studio son especiales:
+USE TallerDB;
+UPDATE Usuarios SET Password = SHA2('1234', 256) WHERE Username = 'admin';
