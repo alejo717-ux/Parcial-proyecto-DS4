@@ -124,5 +124,27 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
 
             e.Handled = true;
         }
+        //Nuevos METODOS validadores
+        // Evita que peguen espacios en blanco al inicio o final de campos críticos
+        public static void PrevenirEspaciosEnBlanco(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == ' ' && ((TextBox)sender).Text.Length == 0)
+            {
+                e.Handled = true; // No permite espacios al inicio
+            }
+        }
+
+        // Valida selección obligatoria en ComboBoxes
+        public static bool ComboSeleccionado(ComboBox cbo, string campo)
+        {
+            if (cbo.SelectedIndex == -1 || cbo.SelectedValue == null)
+            {
+                Advertencia("Debe seleccionar una opción válida en el campo " + campo + ".");
+                cbo.Focus();
+                return false;
+            }
+            return true;
+        }
+
     }
 }
