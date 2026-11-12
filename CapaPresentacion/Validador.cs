@@ -6,8 +6,8 @@ using System.Windows.Forms;
 namespace Parcial3_Proyecto_DS4.CapaPresentacion
 {
     /// <summary>
-    /// Métodos estáticos para validar datos de entrada en los formularios
-    /// y evitar que el sistema se caiga por datos mal escritos.
+    /// Métodos estáticos centralizados para validar datos de entrada en todos los formularios
+    /// y evitar que el sistema falle por datos incorrectos o mal escritos.
     /// </summary>
     internal static class Validador
     {
@@ -17,7 +17,7 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
             MessageBox.Show(mensaje, "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
-        // ---------- Validaciones de contenido ----------
+        // ---------- Validaciones de contenido genéricas ----------
         public static bool CampoObligatorio(string valor, string campo)
         {
             if (string.IsNullOrWhiteSpace(valor))
@@ -93,7 +93,58 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
             return true;
         }
 
-        // ---------- Para el evento KeyPress ----------
+        public static bool EsUsernameValido(string username)
+        {
+            if (string.IsNullOrWhiteSpace(username) || username.Trim().Length < 3)
+            {
+                Advertencia("El nombre de usuario debe tener al menos 3 caracteres.");
+                return false;
+            }
+            if (username.Contains(" "))
+            {
+                Advertencia("El nombre de usuario no puede contener espacios.");
+                return false;
+            }
+            return true;
+        }
+
+        public static bool EsPasswordValido(string password, bool esNuevo)
+        {
+            if (esNuevo && (string.IsNullOrEmpty(password) || password.Length < 4))
+            {
+                Advertencia("La contraseña debe tener al menos 4 caracteres.");
+                return false;
+            }
+            if (!esNuevo && !string.IsNullOrEmpty(password) && password.Length < 4)
+            {
+                Advertencia("La nueva contraseña debe tener al menos 4 caracteres.");
+                return false;
+            }
+            return true;
+        }
+
+        public static bool ComboSeleccionado(ComboBox cbo, string campo)
+        {
+            if (cbo.SelectedIndex < 0 || cbo.SelectedValue == null)
+            {
+                Advertencia("Debe seleccionar un " + campo + " válido.");
+                cbo.Focus();
+                return false;
+            }
+            return true;
+        }
+
+        public static bool EsFechaValidaNoFutura(DateTimePicker dtp)
+        {
+            if (dtp.Value.Date > DateTime.Today)
+            {
+                Advertencia("La fecha de ingreso no puede ser una fecha futura.");
+                dtp.Focus();
+                return false;
+            }
+            return true;
+        }
+
         public static void SoloLetras(KeyPressEventArgs e)
         {
             char c = e.KeyChar;
@@ -124,23 +175,21 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
 
             e.Handled = true;
         }
-        //Nuevos METODOS validadores
-        // Evita que peguen espacios en blanco al inicio o final de campos críticos
+
         public static void PrevenirEspaciosEnBlanco(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == ' ' && ((TextBox)sender).Text.Length == 0)
             {
-                e.Handled = true; // No permite espacios al inicio
+                e.Handled = true;
             }
         }
 
-        // Valida selección obligatoria en ComboBoxes
-        public static bool ComboSeleccionado(ComboBox cbo, string campo)
+        public static bool EsRangoFechasValido(DateTimePicker dtpDesde, DateTimePicker dtpHasta)
         {
-            if (cbo.SelectedIndex == -1 || cbo.SelectedValue == null)
+            if (dtpDesde.Value.Date > dtpHasta.Value.Date)
             {
-                Advertencia("Debe seleccionar una opción válida en el campo " + campo + ".");
-                cbo.Focus();
+                Advertencia("La fecha 'Desde' no puede ser posterior a la fecha 'Hasta'.");
+                dtpDesde.Focus();
                 return false;
             }
             return true;

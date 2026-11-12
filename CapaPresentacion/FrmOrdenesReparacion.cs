@@ -6,7 +6,6 @@ using Parcial3_Proyecto_DS4.CapaEntidad;
 
 namespace Parcial3_Proyecto_DS4.CapaPresentacion
 {
-    
     public partial class FrmOrdenesReparacion : Form
     {
         private readonly OrdenReparacionBD ordenBD = new OrdenReparacionBD();
@@ -55,7 +54,6 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
             {
                 dgvOrdenes.DataSource = ordenBD.ListarConJoin(null, txtBuscar.Text, null, null);
 
-                // Columnas de apoyo (llaves foráneas): se usan en CellClick pero no se muestran.
                 foreach (string col in new[] { "IdCliente", "IdMecanico", "IdServicio" })
                     dgvOrdenes.Columns[col].Visible = false;
 
@@ -71,8 +69,6 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
             }
         }
 
-       
-
         private void cboServicio_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cargando) return;
@@ -82,7 +78,7 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
 
         private void dgvOrdenes_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0) return;   
+            if (e.RowIndex < 0) return;
             DataGridViewRow f = dgvOrdenes.Rows[e.RowIndex];
 
             idSeleccionado = Convert.ToInt32(f.Cells["IdOrden"].Value);
@@ -102,12 +98,10 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
-                e.Handled = true;   // evita el "beep" de Windows
+                e.Handled = true;
                 CargarOrdenes();
             }
         }
-
-        
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
@@ -128,10 +122,10 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
 
         private void btnActualizar_Click(object sender, EventArgs e)
         {
-            if (idSeleccionado == 0) { Advertir("Seleccione una orden de la lista.", dgvOrdenes); return; }
+            if (idSeleccionado == 0) { Validador.Advertencia("Seleccione una orden de la lista."); return; }
             if (estadoSeleccionado == "Completada")
             {
-                Advertir("Una orden completada no se puede modificar.", dgvOrdenes);
+                Validador.Advertencia("Una orden completada no se puede modificar.");
                 return;
             }
             if (!ValidarCampos()) return;
@@ -153,10 +147,10 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-            if (idSeleccionado == 0) { Advertir("Seleccione una orden de la lista.", dgvOrdenes); return; }
+            if (idSeleccionado == 0) { Validador.Advertencia("Seleccione una orden de la lista."); return; }
             if (estadoSeleccionado == "Completada")
             {
-                Advertir("No se puede eliminar una orden completada (queda como historial).", dgvOrdenes);
+                Validador.Advertencia("No se puede eliminar una orden completada (queda como historial).");
                 return;
             }
 
@@ -176,20 +170,20 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
             catch (Exception ex) { MostrarError(ex); }
         }
 
-        
         private void btnAvanzarEstado_Click(object sender, EventArgs e)
         {
-            if (idSeleccionado == 0) { Advertir("Seleccione una orden de la lista.", dgvOrdenes); 
-                return; }
+            if (idSeleccionado == 0) { Validador.Advertencia("Seleccione una orden de la lista."); return; }
 
             string siguiente;
-            if (estadoSeleccionado == "Pendiente") 
+            if (estadoSeleccionado == "Pendiente")
                 siguiente = "En proceso";
-            else if (estadoSeleccionado == "En proceso") 
+            else if (estadoSeleccionado == "En proceso")
                 siguiente = "Completada";
-            else { 
-                Advertir("La orden está '" + estadoSeleccionado + "' y no puede avanzar.", dgvOrdenes); 
-                return; }
+            else
+            {
+                Validador.Advertencia("La orden está '" + estadoSeleccionado + "' y no puede avanzar.");
+                return;
+            }
 
             try
             {
@@ -215,32 +209,18 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
             CargarOrdenes();
         }
 
-        
-
         private bool ValidarCampos()
         {
-            if (cboCliente.SelectedIndex < 0) { 
-                Advertir("Seleccione un cliente.", cboCliente); 
-                return false; }
-            if (cboMecanico.SelectedIndex < 0) { 
-                Advertir("Seleccione un mecánico.", cboMecanico); 
-                return false; }
-            if (cboServicio.SelectedIndex < 0) { 
-                Advertir("Seleccione un servicio.", cboServicio); 
-                return false; }
-            if (cboEstado.SelectedIndex < 0) { 
-                Advertir("Seleccione el estado de la orden.", cboEstado); 
-                return false; }
-            if (dtpFechaIngreso.Value.Date > DateTime.Today)
-            {
-                Advertir("La fecha de ingreso no puede ser futura.", dtpFechaIngreso);
-                return false;
-            }
+            if (!Validador.ComboSeleccionado(cboCliente, "cliente")) return false;
+            if (!Validador.ComboSeleccionado(cboMecanico, "mecánico")) return false;
+            if (!Validador.ComboSeleccionado(cboServicio, "servicio")) return false;
+            if (!Validador.ComboSeleccionado(cboEstado, "estado")) return false;
+            if (!Validador.EsFechaValidaNoFutura(dtpFechaIngreso)) return false;
 
-            decimal precio;   // el precio viene del servicio elegido; se valida que sea numérico
-            if (!decimal.TryParse(txtPrecio.Text, out precio) || precio < 0)
+            decimal precio;
+            if (!Validador.EsDecimalPositivo(txtPrecio.Text, "Precio", out precio))
             {
-                Advertir("El servicio seleccionado no tiene un precio válido.", cboServicio);
+                txtPrecio.Focus();
                 return false;
             }
             return true;
@@ -272,12 +252,6 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
 
             btnGuardar.Enabled = true;
             btnActualizar.Enabled = btnEliminar.Enabled = btnAvanzarEstado.Enabled = false;
-        }
-
-        private void Advertir(string mensaje, Control foco)
-        {
-            MessageBox.Show(mensaje, "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            foco.Focus();
         }
 
         private void MostrarError(Exception ex)

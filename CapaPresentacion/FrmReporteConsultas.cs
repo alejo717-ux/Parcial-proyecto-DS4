@@ -6,8 +6,6 @@ using Parcial3_Proyecto_DS4.CapaDatos;
 
 namespace Parcial3_Proyecto_DS4.CapaPresentacion
 {
-    
-    // (cliente + mecánico + servicio + categoría) y un resumen por mecánico (LEFT JOIN + GROUP BY).
     public partial class FrmReporteConsultas : Form
     {
         private readonly OrdenReparacionBD ordenBD = new OrdenReparacionBD();
@@ -35,13 +33,7 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
 
             if (chkUsarFechas.Checked)
             {
-                if (dtpDesde.Value.Date > dtpHasta.Value.Date)
-                {
-                    MessageBox.Show("La fecha 'Desde' no puede ser posterior a la fecha 'Hasta'.", "Validación",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    dtpDesde.Focus();
-                    return;
-                }
+                if (!Validador.EsRangoFechasValido(dtpDesde, dtpHasta)) return;
                 desde = dtpDesde.Value.Date;
                 hasta = dtpHasta.Value.Date;
             }
@@ -77,13 +69,11 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
 
         private void MostrarTotales(DataTable dt)
         {
-            // Compute devuelve DBNull si no hay filas: se valida antes de convertir.
             object suma = dt.Compute("SUM(Precio)", "Estado <> 'Cancelada'");
             decimal total = suma == DBNull.Value ? 0m : Convert.ToDecimal(suma);
             lblResumen.Text = "Órdenes listadas: " + dt.Rows.Count + "    |    Total facturable (sin canceladas): " + total.ToString("C2");
         }
 
-        // Colorea la celda de Estado para leer el reporte de un vistazo.
         private void dgvReporte_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             foreach (DataGridViewRow fila in dgvReporte.Rows)
