@@ -22,6 +22,7 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
             btnActualizar.Click += btnActualizar_Click;
             btnEliminar.Click += btnEliminar_Click;
             btnLimpiar.Click += btnLimpiar_Click;
+            btnCategorias.Click += btnCategorias_Click;
             dgvServicios.CellClick += dgvServicios_CellClick;
             txtPrecioBase.KeyPress += (s, e) => Validador.SoloDecimal(e, txtPrecioBase);
         }
@@ -225,6 +226,19 @@ namespace Parcial3_Proyecto_DS4.CapaPresentacion
                 MessageBox.Show("No se pudo eliminar el servicio.\n" + ex.Message,
                                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btnCategorias_Click(object sender, EventArgs e)
+        {
+            using (FrmCategorias frm = new FrmCategorias())
+            {
+                frm.ShowDialog();
+            }
+
+            // Recargar por si se agregaron, cambiaron o eliminaron categorías
+            CargarCategorias();
+            CargarGrid();
+            Limpiar();
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)

@@ -39,6 +39,7 @@
             this.btnEliminar = new System.Windows.Forms.Button();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.dgvServicios = new System.Windows.Forms.DataGridView();
+            this.btnCategorias = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvServicios)).BeginInit();
             this.SuspendLayout();
             // 
@@ -93,7 +94,7 @@
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(46, 243);
+            this.btnGuardar.Location = new System.Drawing.Point(47, 282);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(75, 23);
             this.btnGuardar.TabIndex = 6;
@@ -102,7 +103,7 @@
             // 
             // btnActualizar
             // 
-            this.btnActualizar.Location = new System.Drawing.Point(132, 243);
+            this.btnActualizar.Location = new System.Drawing.Point(133, 282);
             this.btnActualizar.Name = "btnActualizar";
             this.btnActualizar.Size = new System.Drawing.Size(75, 23);
             this.btnActualizar.TabIndex = 7;
@@ -111,7 +112,7 @@
             // 
             // btnEliminar
             // 
-            this.btnEliminar.Location = new System.Drawing.Point(46, 282);
+            this.btnEliminar.Location = new System.Drawing.Point(47, 321);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(75, 23);
             this.btnEliminar.TabIndex = 8;
@@ -120,7 +121,7 @@
             // 
             // btnLimpiar
             // 
-            this.btnLimpiar.Location = new System.Drawing.Point(132, 282);
+            this.btnLimpiar.Location = new System.Drawing.Point(133, 321);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(75, 23);
             this.btnLimpiar.TabIndex = 9;
@@ -129,17 +130,28 @@
             // 
             // dgvServicios
             // 
+            this.dgvServicios.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
             this.dgvServicios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvServicios.Location = new System.Drawing.Point(242, 60);
             this.dgvServicios.Name = "dgvServicios";
             this.dgvServicios.Size = new System.Drawing.Size(518, 276);
             this.dgvServicios.TabIndex = 10;
             // 
+            // btnCategorias
+            // 
+            this.btnCategorias.Location = new System.Drawing.Point(47, 226);
+            this.btnCategorias.Name = "btnCategorias";
+            this.btnCategorias.Size = new System.Drawing.Size(121, 23);
+            this.btnCategorias.TabIndex = 11;
+            this.btnCategorias.Text = "Gestionar Categorías";
+            this.btnCategorias.UseVisualStyleBackColor = true;
+            // 
             // FrmServicios
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnCategorias);
             this.Controls.Add(this.dgvServicios);
             this.Controls.Add(this.btnLimpiar);
             this.Controls.Add(this.btnEliminar);
@@ -152,7 +164,7 @@
             this.Controls.Add(this.lblServicio);
             this.Controls.Add(this.txtNombreServicio);
             this.Name = "FrmServicios";
-            this.Text = "FrmServicios";
+            this.Text = "Gestión de Servicios";
             ((System.ComponentModel.ISupportInitialize)(this.dgvServicios)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -172,5 +184,6 @@
         private System.Windows.Forms.Button btnEliminar;
         private System.Windows.Forms.Button btnLimpiar;
         private System.Windows.Forms.DataGridView dgvServicios;
+        private System.Windows.Forms.Button btnCategorias;
     }
 }
