@@ -83,6 +83,7 @@
     <Compile Include="CapaDatos\ClienteBD.cs" />
     <Compile Include="CapaDatos\ConexionBD.cs" />
     <Compile Include="CapaDatos\IRepositorio.cs" />
+    <Compile Include="CapaDatos\MecanicoBD.cs" />
     <Compile Include="CapaDatos\UsuarioBD.cs" />
     <Compile Include="CapaEntidad\BitacoraEntry.cs" />
     <Compile Include="CapaEntidad\CategoriaServicio.cs" />
@@ -121,12 +122,21 @@
     <Compile Include="CapaPresentacion\FrmLogin.Designer.cs">
       <DependentUpon>FrmLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="CapaPresentacion\FrmMecanicos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CapaPresentacion\FrmMecanicos.Designer.cs">
+      <DependentUpon>FrmMecanicos.cs</DependentUpon>
+    </Compile>
     <Compile Include="CapaPresentacion\SesionUsuario.cs" />
     <Compile Include="CapaPresentacion\Validador.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="CapaPresentacion\FrmClientes.resx">
       <DependentUpon>FrmClientes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CapaPresentacion\FrmMecanicos.resx">
+      <DependentUpon>FrmMecanicos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
